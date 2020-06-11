@@ -10,10 +10,13 @@ class Cart extends Component {
   }
 
   componentDidMount(){
+    if(this.props.preloadItems!=null){
+      
+    
       this.props.preloadItems.map((item)=>{
       this.props.items.push(item);
     })
-  
+  }
   }
    
 
