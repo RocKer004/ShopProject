@@ -227,7 +227,7 @@ user-select: none;
   border-radius: 10px;
 }
 
-.shop,.recipe,.aboutpage,.homepage{
+.shop,.recipe-page,.aboutpage,.homepage{
 margin-top: 10vh;
 }
 @media (max-width:575px){
@@ -280,4 +280,9 @@ margin-top: 10vh;
 }
 .sortList li {
   cursor: pointer;
+}
+.recipe-page{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
 }

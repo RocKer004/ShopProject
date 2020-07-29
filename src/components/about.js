@@ -1,12 +1,11 @@
-import React from 'react';
+import React from "react";
 
-
-function About() {
+const About = () => {
   return (
     <div className="aboutpage">
-      <h1> {localStorage.getItem("products")}</h1>
+      <h1> {localStorage.getItem("products")} </h1>{" "}
     </div>
   );
-}
+};
 
 export default About;
