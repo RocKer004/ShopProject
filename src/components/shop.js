@@ -4,20 +4,22 @@ import Recipedisplay from "./RecipeDisplay";
 import Cart from "./cart";
 import Sortfield from "./Sortfield";
 import { CartContext } from "../context/CartContext";
+import useLocalStorage from "../Hooks/useLocalStorage";
 
 const Shop = () => {
   const [Data, setData] = useState([]);
   const [query, setQuery] = useState("Chicken");
-  //const [searchContent, setSearchContent] = useState("");
   const Cartcont = useContext(CartContext);
+  const [savedItems, setSavedItems] = useLocalStorage("products", []);
+
+  //const [searchContent, setSearchContent] = useState("");
 
   useEffect(() => {
     getData(query);
   }, []);
 
   useEffect(() => {
-    let strigified = JSON.stringify(Cartcont.items);
-    localStorage.setItem("products", strigified);
+    setSavedItems(Cartcont.items);
   }, [Cartcont.items]);
 
   const getData = async (query) => {
@@ -43,7 +45,11 @@ const Shop = () => {
         Cartcont.dispatch({ type: "REFRESH" });
       }
     });
-    !condition && Cartcont.dispatch({ type: "ADD_ITEM", value: newItem });
+    if (!condition) {
+      Cartcont.dispatch({ type: "ADD_ITEM", value: newItem });
+
+      setSavedItems(() => Cartcont.items);
+    }
   };
 
   const search = (e) => {

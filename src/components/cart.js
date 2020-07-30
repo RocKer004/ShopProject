@@ -1,15 +1,18 @@
 import React, { useState, useContext, useEffect } from "react";
 import { CartContext } from "../context/CartContext";
-
+import useLocalStorage from "../Hooks/useLocalStorage";
 const Cart = () => {
   const [commission] = useState(13);
   const cartContext = useContext(CartContext);
-
+  const [savedItems, setSavedItems] = useLocalStorage(
+    "products",
+    CartContext.items
+  );
   useEffect(() => {
     let preloadItems = JSON.parse(localStorage.getItem("products"));
 
     if (preloadItems !== null) {
-      cartContext.dispatch({ type: "LOAD_ITEMS", value: preloadItems });
+      cartContext.dispatch({ type: "LOAD_ITEMS", value: savedItems });
     }
   }, []);
 
@@ -36,8 +39,9 @@ const Cart = () => {
           cartContext.dispatch({ type: "REMOVE_ITEM", value: product });
         } else {
           product[0].count--;
-          cartContext.dispatch({ type: "REFRESH" });
         }
+        setSavedItems(cartContext.items);
+        cartContext.dispatch({ type: "REFRESH" });
       }
     });
   };
@@ -49,6 +53,8 @@ const Cart = () => {
         cartContext.dispatch({ type: "REMOVE_ITEM", value: product });
       }
     });
+    setSavedItems(cartContext.items);
+    cartContext.dispatch({ type: "REFRESH" });
   };
   return (
     <div className="cart-container">
